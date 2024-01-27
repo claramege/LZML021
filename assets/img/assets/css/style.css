@@ -1,0 +1,116 @@
+
+
+/* Définition de la couleur d’arrière-plan, une bordure pleine et la largeur de la division "page" */
+
+
+#page {background-color: #ffe0eb; /* Couleur d'arrière-plan différente de html */
+    border: 2px solid #ff69b4; /* Bordure pleine de largeur et couleur au choix */
+    width: 90%; /* Largeur inférieure à 100% ("bande centrale") */
+    margin: 0 auto; /* Centrer la division */}
+
+/* Centrer le contenu de la division "entete" */
+.entete { text-align: center;}
+
+/* Définition des styles pour la division "aboutme" */
+#aboutme 
+  { margin-top: 20px; /* Marge en haut pour espacement */
+    padding: 20px; /* Espacement intérieur */
+    background-color: #fff; /* Couleur de fond */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    text-align: center;}
+
+/* Style pour les titres h2 dans la section "aboutme" */
+#aboutme h2 {color: #ff69b4; /* Couleur du texte */
+    font-size: 1.5em; /* Taille du texte */
+    margin-bottom: 10px; /* Marge en bas */}
+
+#aboutme table {margin: 0 auto;}
+
+
+/* Style pour les listes dans la section "aboutme" */
+#aboutme ul, #aboutme ol { margin-left: 20px; /* Marge à gauche pour l'indentation */}
+
+/* Style pour les liens dans la section "aboutme" */
+#aboutme a {color: #ff69b4; /* Couleur du lien */
+    text-decoration: underline; /* Soulignement */}
+
+
+
+
+
+/* Définition de la couleur d'arrière-plan, de la taille de police et d'un affichage au maximale pour le HTML */
+        html {background-color: #ffe4e1;
+            font-size: 14px; 
+            width: 100%;}
+
+/* Utilisation de mesures relatives pour augmenter la taille de la police pour les titres h1 et h2 */
+        h1 {font-size: 3em; 
+            margin-bottom: 1px;}
+
+
+        h2 {font-size: 2em; 
+            margin-bottom: 1px;}
+
+         body 
+            {font-family: 'Pacifico', cursive; 
+            background-color: #ffe4e1; 
+            color: #ff69b4; 
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto;}
+
+        h1 
+        {font-size: 3em;
+        margin-bottom: 1px;}
+
+
+        h2 
+        { font-size: 2em; 
+        margin-bottom: 1px;}
+
+        img
+            {width: 150px;
+            height: auto;
+            border-radius: 50%;
+            margin-top: 10px;
+            display: block; 
+            margin-left: auto;
+            margin-right: auto;}
+
+            img#logo
+            {width: 150px;
+            height: auto;
+            border-radius: 70%;
+            margin-top: 10px;
+            position: absolute;
+            top: 10px; 
+            left: 10px;}
+
+        table 
+        {    width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 2px solid #ff69b4;}
+
+        th, td 
+        {    border: 1px solid #ff69b4;
+            padding: 8px;
+            text-align: left; }
+
+        th 
+        {    background-color: #ffe4e1; }
+
+        ol 
+        { margin-top: 10px;
+            color: #ff69b4;}
+
+        a 
+        {    color: #ff69b4;
+            text-decoration: none;}
+
+        a:hover 
+        {    text-decoration: underline;}

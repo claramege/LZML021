@@ -4,129 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clara Mège</title>
-    <style>
-        body 
-            {font-family: 'Pacifico', cursive; 
-            background-color: #ffe4e1; 
-            color: #ff69b4; 
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: auto;}
-
-        h1 
-        {font-size: 3em;
-        margin-bottom: 1px;}
-
-
-        h2 
-        { font-size: 2em; 
-        margin-bottom: 1px;}
-
-        img
-            {width: 150px;
-            height: auto;
-            border-radius: 50%;
-            margin-top: 10px;
-            display: block; 
-            margin-left: auto;
-            margin-right: auto;}
-
-            img#logo
-            {width: 150px;
-            height: auto;
-            border-radius: 70%;
-            margin-top: 10px;
-            position: absolute;
-            top: 10px; 
-            left: 10px;}
-
-        table 
-        {    width: 80%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            border: 2px solid #ff69b4;}
-
-        th, td 
-        {    border: 1px solid #ff69b4;
-            padding: 8px;
-            text-align: left; }
-
-        th 
-        {    background-color: #ffe4e1; }
-
-        ol 
-        { margin-top: 10px;
-            color: #ff69b4;}
-
-        a 
-        {    color: #ff69b4;
-            text-decoration: none;}
-
-        a:hover 
-        {    text-decoration: underline;}
-
-
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
-    <h1>Clara Mège</h1>
-    
-    <h2>Licence 3 Lettres Modernes </h2>
-    <h3> Mineure Humanités Numeriques<h3>
-
-    
-    <img id="logo" src ="logo.jpeg" alt="Logo Sorbonne Nouvelle">
-
-    <img src="avatar.jpeg" alt="Mon avatar" style="width: 100px;" display: block>
-
-    <h2>Mon CV</h2>
-
-
-    <table>
-        <tr>
-            <th>Année</th>
-            <th>Formation</th>
-            <th>Experience pro</th>
-        </tr>
-        <tr>
-        <td>2021</td>
-        <td>Baccalauréat SES, Anglais</td>
-        <td>X</td>
-        </tr>
-        <tr>
-            <td>2022</td>
-            <td>Licence 1 Lettres Modernes</td>
-            <td>Préparatrice de commandes </td>
-        </tr>
-        <tr>
-            <td>2023</td>
-            <td>Licence 2 Lettres Modernes</td>
-             <td>Vendeuse Bijouterie</td>
-        </tr>
-        <tr>
-            <td>2024</td>
-            <td>Licence 3 Lettres Modernes</td>
-            <td>AED prépro</td>
-        </tr>
-    </table>
-
-    <h2>Mes 5 dernières lectures</h2>
-
-
-    <ol>
-        <li>Lettre d'une inconnue - Stephan Zweig💔</li>
-        <li>Une bouteille dans la mer de gaza - Valérie Zenatti 💭</li>
-        <li> Dora Bruder - Patrick Modiano 🔎</li>
-        <li>Scrupules - Danielle Steel (pas de jugement je savais pas quoi lire)</li>
-        <li>L'homme révolté - Albert Camus 🕰</li>
-    </ol>
-
-   
-    <p><a href="http://www.univ-paris3.fr/accueil-63305.kjsp?RH=1308060048649&RF=ACCUEIL">Site de la Sorbonne Nouvelle</a></p>
-
+    <!-- Div couvrant tout le contenu de la page -->
+    <div id="page">
+        <!-- Div pour l'entête -->
+        <div class="entete">
+            <h1>Clara Mège</h1>
+            <h2>Licence 3 Lettres Modernes</h2>
+            <h3>Mineure Humanités Numeriques</h3>
+            <img id="logo" src="assets/img/logo.jpeg" alt="Logo Sorbonne Nouvelle">
+            <img src="assets/img/avatar.jpeg" alt="Mon avatar" style="width: 100px;">
+        </div>
+        
+        <!-- Div pour les informations personnelles -->
+        <div id="aboutme">
+            <!-- Votre contenu ici -->
+            <h2>Mon CV</h2>
+            <table>
+                <tr>
+                    <th>Année</th>
+                    <th>Formation</th>
+                    <th>Experience pro</th>
+                </tr>
+                <tr>
+                    <td>2021</td>
+                    <td>Baccalauréat SES, Anglais</td>
+                    <td>X</td>
+                </tr>
+                <tr>
+                    <td>2022</td>
+                    <td>Licence 1 Lettres Modernes</td>
+                    <td>Préparatrice de commandes </td>
+                </tr>
+                <tr>
+                    <td>2023</td>
+                    <td>Licence 2 Lettres Modernes</td>
+                    <td>Vendeuse Bijouterie</td>
+                </tr>
+                <tr>
+                    <td>2024</td>
+                    <td>Licence 3 Lettres Modernes</td>
+                    <td>AED prépro</td>
+                </tr>
+            </table>
+            <h2>Mes 5 dernières lectures</h2>
+            <ol>
+                <li>Lettre d'une inconnue - Stephan Zweig💔</li>
+                <li>Une bouteille dans la mer de gaza - Valérie Zenatti 💭</li>
+                <li>Dora Bruder - Patrick Modiano 🔎</li>
+                <li>Scrupules - Danielle Steel (pas de jugement je savais pas quoi lire)</li>
+                <li>L'homme révolté - Albert Camus 🕰</li>
+            </ol>
+            <footer>
+                <a href="http://www.univ-paris3.fr/accueil-63305.kjsp?RH=1308060048649&RF=ACCUEIL">Site de la Sorbonne Nouvelle</a>
+            </footer>
+        </div>
+    </div>
 </body>
 </html>

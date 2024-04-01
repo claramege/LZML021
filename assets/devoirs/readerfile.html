@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" href="http://www.tal.univ-paris3.fr/plurital/logo.ico">
     <title>Lecture des données dans un fichier...</title>
-    <script type="text/javascript" language="javascript" src="code.js"></script>
-    <link rel="stylesheet" href="monstyle.css" />
+    <script type="text/javascript" language="javascript" src="../javascript/code.js"></script>
+    <link rel="stylesheet" href="../css/monstyle.css" />
 </head>
 
 <body>
@@ -17,8 +17,7 @@
             <div id="page-wrapper">
                 <div>
                     <span>
-                        <label for="fileInput" class="btn"><small>Sélectionner un fichier au format .txt
-                                :</small></label>
+                        <label for="fileInput" class="btn"><small>Sélectionner un fichier au format .txt :</small></label>
                         <input id="fileInput" type="file" accept="text/plain" name="Fichier (.txt)" />
                     </span>
                 </div>
@@ -43,10 +42,7 @@
                     </small>
                     <br />
                     <br />
-                    <button onclick="alert('bonjour');"><span>Bonjour</span></button>
-                    <br />
-                    <br />
-                    <button class="submit" onclick="alert('Je ne fais rien, changez-moi !');"><span>Segmentation</span></button>
+                    <button id="segmentationFunction">Segmentation</button>
                     <button class="submit" onclick="alert('Je ne fais rien, changez-moi !');"><span>action 1</span></button>
                     <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 2</span></button>
                     <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 3</span></button>
@@ -58,10 +54,12 @@
             <div id="logger" style="width:100%"></div>
             <br />
             <div id="Global">
+                <p id="result"></p>
                 <div id="fileDisplayArea"></div>
                 <div id="page-analysis"></div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

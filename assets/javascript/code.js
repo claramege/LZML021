@@ -1,45 +1,73 @@
 window.onload = function() {
     let fileInput = document.getElementById('fileInput');
     let fileDisplayArea = document.getElementById('fileDisplayArea');
-    let pageAnalysis = document.getElementById('page-analysis');
-    let delimID = document.getElementById('delimID');
+    let pageAnalysis = document.getElementById('page-analysis'); 
 
     // Fonction pour diviser le texte en mots en utilisant les délimiteurs du fichier HTML
-    function segmentText(text, delimiters) {
+    function tokenizeText(text) {
+        let delimiters = document.getElementById('delimID').value;
         let regex = new RegExp("[" + delimiters + "]+");
         return text.split(regex);
     }
 
-    // Fonction pour afficher le résultat de la segmentation dans la zone 'page-analysis'
-    function displaySegmentationResult(text) {
-        // Séparation du texte en mots en utilisant les délimiteurs
-        let words = segmentText(text, delimID.value);
+    // Fonction pour afficher les cooccurrents dans le texte pour un mot donné
+    function displayCooccurrences(word, interval) {
+        let tokens = tokenizeText(fileDisplayArea.textContent.trim());
+        let wordIndex = tokens.indexOf(word);
+        if (wordIndex === -1) {
+            alert('Le mot ne se trouve pas dans le texte.');
+            return;
+        }
 
-        // Affichage du nombre total de mots
-        let totalWords = words.length;
-        let totalWordsText = document.createElement('p');
-        totalWordsText.textContent = 'Nombre total de mots : ' + totalWords;
-        pageAnalysis.appendChild(totalWordsText);
+        let cooccurrences = {};
+        let leftFreq = 0, rightFreq = 0;
+        for (let i = Math.max(0, wordIndex - interval); i < Math.min(tokens.length, wordIndex + interval + 1); i++) {
+            if (i !== wordIndex) {
+                let coWord = tokens[i];
+                cooccurrences[coWord] = (cooccurrences[coWord] || 0) + 1;
+                if (i < wordIndex) leftFreq++;
+                else rightFreq++;
+            }
+        }
 
-        // Création du tableau classant les mots par longueur croissante
-        let sortedWords = words.slice().sort(function(a, b) {
-            return a.length - b.length;
-        });
-
+        let totalCoFrequency = Object.values(cooccurrences).reduce((acc, curr) => acc + curr, 0);
         let table = document.createElement('table');
         let tableHeader = table.createTHead();
         let headerRow = tableHeader.insertRow();
-        let headerCell = headerRow.insertCell();
-        headerCell.textContent = 'Mots par longueur croissante';
-        let tableBody = table.createTBody();
-        sortedWords.forEach(function(word) {
-            let row = tableBody.insertRow();
-            let cell = row.insertCell();
-            cell.textContent = word;
+        let headers = ['Cooccurrent(s)', 'Co-fréquence', 'Fréquence gauche', '% fréquence gauche', 'Fréquence droite', '% fréquence droite'];
+        headers.forEach(headerText => {
+            let headerCell = headerRow.insertCell();
+            headerCell.textContent = headerText;
         });
 
+        let tableBody = table.createTBody();
+        for (let coWord in cooccurrences) {
+            let row = tableBody.insertRow();
+            let coFreq = cooccurrences[coWord];
+            let leftPercent = (leftFreq === 0) ? 0 : (leftFreq / totalCoFrequency) * 100;
+            let rightPercent = (rightFreq === 0) ? 0 : (rightFreq / totalCoFrequency) * 100;
+
+            [coWord, coFreq, leftFreq, leftPercent.toFixed(2) + '%', rightFreq, rightPercent.toFixed(2) + '%'].forEach(val => {
+                let cell = row.insertCell();
+                cell.textContent = val;
+            });
+        }
+
+        pageAnalysis.innerHTML = '';
         pageAnalysis.appendChild(table);
     }
+
+    // Associez la fonction à l'événement click du bouton "Cooccurrents/fréquence"
+    let cooccurrenceButton = document.getElementById('cooccurrenceButton');
+    cooccurrenceButton.addEventListener('click', function() {
+        let word = document.getElementById('poleID').value.trim();
+        let interval = parseInt(document.getElementById('lgID').value.trim());
+        if (!word || isNaN(interval) || interval <= 0) {
+            alert('Veuillez entrer un terme et une longueur valide.');
+            return;
+        }
+        displayCooccurrences(word, interval);
+    });
 
     // On "écoute" si le fichier donné a été modifié.
     fileInput.addEventListener('change', function(e) {
@@ -51,11 +79,9 @@ window.onload = function() {
 
             reader.onload = function(e) {
                 fileDisplayArea.innerText = reader.result;
-                pageAnalysis.innerHTML = ''; // Effacer le contenu précédent de page-analysis
-                displaySegmentationResult(reader.result); // Afficher le résultat de la segmentation
             }
 
-            reader.readAsText(file);    
+            reader.readAsText(file);
 
             document.getElementById("logger").innerHTML = '<span class="infolog">Fichier chargé avec succès</span>';
         } else {

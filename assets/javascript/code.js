@@ -1,92 +1,163 @@
 window.onload = function() {
     let fileInput = document.getElementById('fileInput');
     let fileDisplayArea = document.getElementById('fileDisplayArea');
-    let pageAnalysis = document.getElementById('page-analysis'); 
-
-    // Fonction pour diviser le texte en mots en utilisant les délimiteurs du fichier HTML
-    function tokenizeText(text) {
-        let delimiters = document.getElementById('delimID').value;
-        let regex = new RegExp("[" + delimiters + "]+");
-        return text.split(regex);
-    }
-
-    // Fonction pour afficher les cooccurrents dans le texte pour un mot donné
-    function displayCooccurrences(word, interval) {
-        let tokens = tokenizeText(fileDisplayArea.textContent.trim());
-        let wordIndex = tokens.indexOf(word);
-        if (wordIndex === -1) {
-            alert('Le mot ne se trouve pas dans le texte.');
-            return;
-        }
-
-        let cooccurrences = {};
-        let leftFreq = 0, rightFreq = 0;
-        for (let i = Math.max(0, wordIndex - interval); i < Math.min(tokens.length, wordIndex + interval + 1); i++) {
-            if (i !== wordIndex) {
-                let coWord = tokens[i];
-                cooccurrences[coWord] = (cooccurrences[coWord] || 0) + 1;
-                if (i < wordIndex) leftFreq++;
-                else rightFreq++;
-            }
-        }
-
-        let totalCoFrequency = Object.values(cooccurrences).reduce((acc, curr) => acc + curr, 0);
-        let table = document.createElement('table');
-        let tableHeader = table.createTHead();
-        let headerRow = tableHeader.insertRow();
-        let headers = ['Cooccurrent(s)', 'Co-fréquence', 'Fréquence gauche', '% fréquence gauche', 'Fréquence droite', '% fréquence droite'];
-        headers.forEach(headerText => {
-            let headerCell = headerRow.insertCell();
-            headerCell.textContent = headerText;
-        });
-
-        let tableBody = table.createTBody();
-        for (let coWord in cooccurrences) {
-            let row = tableBody.insertRow();
-            let coFreq = cooccurrences[coWord];
-            let leftPercent = (leftFreq === 0) ? 0 : (leftFreq / totalCoFrequency) * 100;
-            let rightPercent = (rightFreq === 0) ? 0 : (rightFreq / totalCoFrequency) * 100;
-
-            [coWord, coFreq, leftFreq, leftPercent.toFixed(2) + '%', rightFreq, rightPercent.toFixed(2) + '%'].forEach(val => {
-                let cell = row.insertCell();
-                cell.textContent = val;
-            });
-        }
-
-        pageAnalysis.innerHTML = '';
-        pageAnalysis.appendChild(table);
-    }
-
-    // Associez la fonction à l'événement click du bouton "Cooccurrents/fréquence"
-    let cooccurrenceButton = document.getElementById('cooccurrenceButton');
-    cooccurrenceButton.addEventListener('click', function() {
-        let word = document.getElementById('poleID').value.trim();
-        let interval = parseInt(document.getElementById('lgID').value.trim());
-        if (!word || isNaN(interval) || interval <= 0) {
-            alert('Veuillez entrer un terme et une longueur valide.');
-            return;
-        }
-        displayCooccurrences(word, interval);
-    });
 
     // On "écoute" si le fichier donné a été modifié.
+    // Si on a donné un nouveau fichier, on essaie de le lire.
     fileInput.addEventListener('change', function(e) {
+        // Dans le HTML (ligne 22), fileInput est un élément de tag "input" avec un attribut type="file".
+        // On peut récupérer les fichiers données avec le champs ".files" au niveau du javascript.
+        // On peut potentiellement donner plusieurs fichiers,
+        // mais ici on n'en lit qu'un seul, le premier, donc indice 0.
         let file = fileInput.files[0];
+        // on utilise cette expression régulière pour vérifier qu'on a bien un fichier texte.
         let textType = new RegExp("text.*");
 
-        if (file.type.match(textType)) {
+        if (file.type.match(textType)) { // on vérifie qu'on a bien un fichier texte
+            // lecture du fichier. D'abord, on crée un objet qui sait lire un fichier.
             var reader = new FileReader();
 
+            // on dit au lecteur de fichier de placer le résultat de la lecture
+            // dans la zone d'affichage du texte.
             reader.onload = function(e) {
                 fileDisplayArea.innerText = reader.result;
             }
 
-            reader.readAsText(file);
+            // on lit concrètement le fichier.
+            // Cette lecture lancera automatiquement la fonction "onload" juste au-dessus.
+            reader.readAsText(file);    
 
             document.getElementById("logger").innerHTML = '<span class="infolog">Fichier chargé avec succès</span>';
-        } else {
+        } else { // pas un fichier texte : message d'erreur.
             fileDisplayArea.innerText = "";
             document.getElementById("logger").innerHTML = '<span class="errorlog">Type de fichier non supporté !</span>';
         }
     });
 }
+
+
+
+function sort_words() {
+// récupération du contenu du fichier texte
+const output = document.getElementById("fileDisplayArea").innerText;
+
+// Vérification si la zone de texte est vide
+if (output.trim() === "") {
+    document.getElementById("logger").innerHTML = '<span class="errorlog">Aucun fichier chargé !</span>';
+    return; // Arrête l'exécution de la fonction
+}
+
+// récupération du contenu du fichier texte
+const output = document.getElementById("fileDisplayArea").innerText;
+
+//balise pour écriture des résultats
+let result =  document.getElementById("page-analysis");
+
+//récupération des délimiteurs de mots
+let delimiters = document.getElementById("delimID").value;
+
+
+//Corrections de la liste de délimiteurs pour éviter des erreurs dans l'expression régulière
+delim2 = delimiters.replace("-", "\\-") ; //échappement du tiret, comme il entouré d'autres caractères iol sera considéré comme marquant un intervalle comme dans [4-9]
+delim2 = delim2.replace("[", "\\[") ; // échappement des crochets ouverts
+delim2 = delim2.replace("]", "\\]") ; // échappement des crochets fermants
+delim2 = delim2 + "—"; //facultatif: ajout des tirets longs
+delim2 = delim2 + "\\s" ;//a jout de tous les symboles d'espacement
+
+
+//Construction de l'expression régulière pour découper les mots
+
+let word_regex = new RegExp ( "[" + //crochet ouvert pour signifier l'alternative 
+                            delim2 +                      
+                            "]" , 'g'); // pour enlever plusieurs délimiteurs 
+
+
+
+all_words = output.split(word_regex);
+
+cleaned_words = all_words.filter(x => x.trim() != '') // pour ne garder que les tokens non vides 
+
+let dic_length={};
+
+for (let word of cleaned_words){
+    if (word.length in dic_length){
+        dic_length[word.length]["freq"] += 1;
+        if (dic_length[word.length] ["elements"].includes(word.toLowerCase())) {
+           
+        }
+        else{
+            dic_length[word.length] ["elements"].push(word.toLowerCase());
+        }
+      
+    }
+    else {
+         dic_length[word.length]= {}
+         dic_length[word.length]["freq"] = 1;
+         dic_length[word.length] ["elements"]= [word.toLowerCase()]   ;   
+
+    }
+}
+
+let table = document.createElement("table");
+table.style.margin = "auto";
+let head = table.appendChild(document.createElement("tr"));
+head.innerHTML = "<th>Nombre de caractères</th><th>Nombre d'occurrences</th><th>Formes(s) unique(s)</th>";
+
+ordered = Object.keys(dic_length).sort((a, b) => a - b);
+
+for (let elem of ordered){
+    let row = table.appendChild(document.createElement("tr"));
+    let cell_length = row.appendChild(document.createElement("td"));
+    let cell_total = row.appendChild(document.createElement("td"));
+    let cell_details = row.appendChild(document.createElement("td"));
+    cell_length.innerHTML = elem;
+    cell_total.innerHTML = dic_length[elem]["freq"];
+    cell_details.innerHTML = dic_length[elem]["elements"].sort().join(', ') +' ('+ dic_length[elem]["elements"].length +')';
+    
+
+}
+
+result.innerHTML =`<p>Le  texte contient au total ${cleaned_words.length} mots.<p/>`;
+result.append(table);
+
+}
+  let labels = [];
+    let series = [];
+
+    // Création des données pour le graphique Chartist
+    Object.keys(dic_length).forEach(length => {
+        labels.push(length);
+        series.push(dic_length[length]["freq"]);
+    });
+
+    // Configuration du graphique Chartist
+    let data = {
+        labels: labels,
+        series: [series]
+    };
+
+    let options = {
+        axisX: {
+            labelInterpolationFnc: function(value, index) {
+                return value;
+            }
+        }
+    };
+
+    // Affichage du graphique Chartist
+    new Chartist.Line('.ct-chart', data, options);
+// Fonction pour afficher un message personnalisé
+function direBonjour() {
+    alert('Bonjour! Bienvenue sur notre page.');
+}
+
+function toggleHelp() {
+    var helpDiv = document.getElementById("help");
+    if (helpDiv.style.display === "none") {
+        helpDiv.style.display = "block";
+    } else {
+        helpDiv.style.display = "none";
+    }
+}
+
+

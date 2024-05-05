@@ -5,8 +5,11 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" href="http://www.tal.univ-paris3.fr/plurital/logo.ico">
     <title>Lecture des données dans un fichier...</title>
-    <script type="text/javascript" language="javascript" src="../javascript/code.js"></script>
-    <link rel="stylesheet" href="../css/monstyle.css" />
+    <script type="text/javascript" language="javascript" src="code.js"></script>
+    <!-- Ajout de Chartist -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chartist/dist/chartist.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chartist/dist/chartist.min.js"></script>
+    <link rel="stylesheet" href="monstyle.css" />
 </head>
 
 <body>
@@ -17,7 +20,8 @@
             <div id="page-wrapper">
                 <div>
                     <span>
-                        <label for="fileInput" class="btn"><small>Sélectionner un fichier au format .txt :</small></label>
+                        <label for="fileInput" class="btn"><small>Sélectionner un fichier au format .txt
+                                :</small></label>
                         <input id="fileInput" type="file" accept="text/plain" name="Fichier (.txt)" />
                     </span>
                 </div>
@@ -42,23 +46,33 @@
                     </small>
                     <br />
                     <br />
-                    <button id="segmentationFunction">Segmentation</button>
-                    <button id="cooccurrenceButton" class="submit"><span>Cooccurrents/fréquence</span></button>
-                    <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 2</span></button>
-                    <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 3</span></button>
-                    <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 4</span></button>
-                    <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 5</span></button>
-                    <button class="submit" onclick="alert('Je ne fais rien, changez-moi !')"><span>action 6</span></button>
+                   <button onclick="direBonjour();"><span>Bonjour</span></button>
+
+                    <br />
+                    <button class="submit" onclick="sort_words();"><span>Segmentation</span></button>
+                    <button onclick="toggleHelp();"><span>Afficher/Masquer l'aide</span></button>
+
+                   
                 </p>
             </div>
             <div id="logger" style="width:100%"></div>
             <br />
             <div id="Global">
                 <div id="fileDisplayArea"></div>
-                <div id="page-analysis"></div>
+                <div id="page-analysis">
+                    <!-- Zone pour afficher les graphiques Chartist -->
+                    <div class="ct-chart"></div>
+                    <div id="help">
+    <!-- Contenu de l'aide -->
+    <p>Bienvenue sur notre page! Cette page permet de charger un fichier texte, de segmenter les mots, et d'afficher des analyses.</p>
+    <p>Pour charger un fichier, utilisez le bouton "Sélectionner un fichier".</p>
+    <p>Après avoir chargé un fichier, utilisez le bouton "Segmentation" pour analyser son contenu.</p>
+</div>
+
+                </div>
             </div>
         </div>
     </div>
-</body>
 
+</body>
 </html>
